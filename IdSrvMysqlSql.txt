@@ -1,0 +1,38 @@
+create table `Clients` (`Id` int not null  auto_increment ,`Enabled` bool not null ,`ClientId` nvarchar(200)  not null ,`ClientName` nvarchar(200)  not null ,`ClientUri` nvarchar(2000) ,`LogoUri` longtext,`RequireConsent` bool not null ,`AllowRememberConsent` bool not null ,`AllowAccessTokensViaBrowser` bool not null ,`Flow` int not null ,`AllowClientCredentialsOnly` bool not null ,`LogoutUri` longtext,`LogoutSessionRequired` bool not null ,`RequireSignOutPrompt` bool not null ,`AllowAccessToAllScopes` bool not null ,`IdentityTokenLifetime` int not null ,`AccessTokenLifetime` int not null ,`AuthorizationCodeLifetime` int not null ,`AbsoluteRefreshTokenLifetime` int not null ,`SlidingRefreshTokenLifetime` int not null ,`RefreshTokenUsage` int not null ,`UpdateAccessTokenOnRefresh` bool not null ,`RefreshTokenExpiration` int not null ,`AccessTokenType` int not null ,`EnableLocalLogin` bool not null ,`IncludeJwtId` bool not null ,`AlwaysSendClientClaims` bool not null ,`PrefixClientClaims` bool not null ,`AllowAccessToAllGrantTypes` bool not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE UNIQUE index  `IX_ClientId` on `Clients` (`ClientId` DESC) using HASH;
+create table `ClientCorsOrigins` (`Id` int not null  auto_increment ,`Origin` nvarchar(150)  not null ,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientCorsOrigins` (`Client_Id` DESC) using HASH;
+create table `ClientCustomGrantTypes` (`Id` int not null  auto_increment ,`GrantType` nvarchar(250)  not null ,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientCustomGrantTypes` (`Client_Id` DESC) using HASH;
+create table `ClientScopes` (`Id` int not null  auto_increment ,`Scope` nvarchar(200)  not null ,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientScopes` (`Client_Id` DESC) using HASH;
+create table `ClientClaims` (`Id` int not null  auto_increment ,`Type` nvarchar(250)  not null ,`Value` nvarchar(250)  not null ,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientClaims` (`Client_Id` DESC) using HASH;
+create table `ClientSecrets` (`Id` int not null  auto_increment ,`Value` nvarchar(250)  not null ,`Type` nvarchar(250) ,`Description` nvarchar(2000) ,`Expiration` datetime,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientSecrets` (`Client_Id` DESC) using HASH;
+create table `ClientIdPRestrictions` (`Id` int not null  auto_increment ,`Provider` nvarchar(200)  not null ,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientIdPRestrictions` (`Client_Id` DESC) using HASH;
+create table `ClientPostLogoutRedirectUris` (`Id` int not null  auto_increment ,`Uri` nvarchar(2000)  not null ,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientPostLogoutRedirectUris` (`Client_Id` DESC) using HASH;
+create table `ClientRedirectUris` (`Id` int not null  auto_increment ,`Uri` nvarchar(2000)  not null ,`Client_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Client_Id` on `ClientRedirectUris` (`Client_Id` DESC) using HASH;
+alter table `ClientCorsOrigins` add constraint `FK_ClientCorsOrigins_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+alter table `ClientCustomGrantTypes` add constraint `FK_ClientCustomGrantTypes_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+alter table `ClientScopes` add constraint `FK_ClientScopes_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+alter table `ClientClaims` add constraint `FK_ClientClaims_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+alter table `ClientSecrets` add constraint `FK_ClientSecrets_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+alter table `ClientIdPRestrictions` add constraint `FK_ClientIdPRestrictions_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+alter table `ClientPostLogoutRedirectUris` add constraint `FK_ClientPostLogoutRedirectUris_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+alter table `ClientRedirectUris` add constraint `FK_ClientRedirectUris_Clients_Client_Id`  foreign key (`Client_Id`) references `Clients` ( `Id`)  on update cascade on delete cascade ;
+
+
+create table `Scopes` (`Id` int not null  auto_increment ,`Enabled` bool not null ,`Name` nvarchar(200)  not null ,`DisplayName` nvarchar(200) ,`Description` nvarchar(1000) ,`Required` bool not null ,`Emphasize` bool not null ,`Type` int not null ,`IncludeAllClaimsForUser` bool not null ,`ClaimsRule` nvarchar(200) ,`ShowInDiscoveryDocument` bool not null ,`AllowUnrestrictedIntrospection` bool not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+create table `ScopeClaims` (`Id` int not null  auto_increment ,`Name` nvarchar(200)  not null ,`Description` nvarchar(1000) ,`AlwaysIncludeInIdToken` bool not null ,`Scope_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Scope_Id` on `ScopeClaims` (`Scope_Id` DESC) using HASH;
+create table `ScopeSecrets` (`Id` int not null  auto_increment ,`Description` nvarchar(1000) ,`Expiration` datetime,`Type` nvarchar(250) ,`Value` nvarchar(250)  not null ,`Scope_Id` int not null ,primary key ( `Id`) ) engine=InnoDb auto_increment=0;
+CREATE index  `IX_Scope_Id` on `ScopeSecrets` (`Scope_Id` DESC) using HASH;
+alter table `ScopeClaims` add constraint `FK_ScopeClaims_Scopes_Scope_Id`  foreign key (`Scope_Id`) references `Scopes` ( `Id`)  on update cascade on delete cascade ;
+alter table `ScopeSecrets` add constraint `FK_ScopeSecrets_Scopes_Scope_Id`  foreign key (`Scope_Id`) references `Scopes` ( `Id`)  on update cascade on delete cascade ;
+
+create table `Consents` (`Subject` nvarchar(200)  not null ,`ClientId` nvarchar(200)  not null ,`Scopes` nvarchar(2000)  not null ,primary key ( `Subject`,`ClientId`) ) engine=InnoDb auto_increment=0;
+create table `Tokens` (`Key` nvarchar(128)  not null ,`TokenType` smallint not null ,`SubjectId` nvarchar(200) ,`ClientId` nvarchar(200)  not null ,`JsonCode` longtext not null ,`Expiry` datetime not null ,primary key ( `Key`,`TokenType`) ) engine=InnoDb auto_increment=0;

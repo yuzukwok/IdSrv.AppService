@@ -1,0 +1,14 @@
+﻿{
+  "Port": 9000,
+  "CertFileName": " ",
+  "CertFileKeyPwd": " ",
+  "UseLog": true,
+  "EfConnectionString": "Default",
+  "UserServiceMappings": [
+    {
+      "ClientId": "appclientvr",
+      "UserServiceClassFullName": " ",
+      "Extparam": "Default"
+    }
+  ]
+}
