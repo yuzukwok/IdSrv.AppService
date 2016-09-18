@@ -1,4 +1,5 @@
 ﻿
+using Exceptionless;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace IdSrv.App
             var currentDir =
                  new FileInfo(Uri.UnescapeDataString(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath));
             NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(currentDir.DirectoryName + "//" + "NLog.config", true);
-
+            ExceptionlessClient.Default.Startup();
             //set logger
          
          var t=   IdentityServer3.Core.Logging.LogProvider.GetCurrentClassLogger();
